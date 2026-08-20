@@ -1,0 +1,7 @@
+flask
+authlib
+python-dotenv
+requests
+PyJWT
+cryptography
+openshell

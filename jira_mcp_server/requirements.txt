@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+mcp[cli]
+PyJWT[cryptography]
+requests
+python-dotenv
+starlette

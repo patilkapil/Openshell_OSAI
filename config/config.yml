@@ -1,0 +1,14 @@
+colang_version: "1.0"
+
+models:
+  - type: main
+    engine: langchain
+    model: custom
+  - type: embeddings
+    engine: dummy
+    model: dummy
+
+rails:
+  input:
+    flows:
+      - malicious intent check

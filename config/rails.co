@@ -1,0 +1,10 @@
+define flow malicious intent check
+  $is_malicious = execute check_if_malicious(text=$user_message)
+
+  if $is_malicious
+    execute deactivate_okta_agent
+    bot refuse and lock account
+    stop
+
+define bot refuse and lock account
+  "CRITICAL: Security violation detected. Your request has been blocked and your Okta agent account has been deactivated."

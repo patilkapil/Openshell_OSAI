@@ -1,0 +1,29 @@
+[openshell]
+version = 1
+
+[openshell.gateway]
+bind_address = "127.0.0.1:17670"
+disable_tls = true
+compute_drivers = ["docker"]
+
+[openshell.gateway.gateway_jwt]
+signing_key_path = "/tmp/openshell-signing.pem"
+public_key_path = "/tmp/openshell-public.pem"
+kid_path = "/tmp/openshell-kid.txt"
+ttl_secs = 0
+
+[openshell.gateway.oidc]
+# Okta Org Authorization Server — issuer is just the org URL
+# Replace with your Okta org domain
+issuer = "https://your-org.oktapreview.com"
+# Org auth server audience is the org URL itself
+audience = "https://your-org.oktapreview.com"
+jwks_ttl_secs = 3600
+
+# EXPLICITLY set these to empty strings under the OIDC section
+admin_role = ""
+user_role = ""
+roles_claim = ""
+
+[openshell.gateway.auth]
+allow_unauthenticated_users = true

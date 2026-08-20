@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenShell · Sign In</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 14px 28px;
+      background: #1a1d2e;
+      border-bottom: 1px solid #2d3748;
+    }
+    header .brand { display: flex; align-items: center; gap: 10px; }
+    header .brand h1 { font-size: 1.1rem; font-weight: 700; color: #fff; }
+    header .brand span {
+      font-size: 0.68rem; color: #475569; font-weight: 400;
+      letter-spacing: .07em; text-transform: uppercase;
+    }
+
+    .wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #1a1d2e;
+      border: 1px solid #2d3748;
+      border-radius: 14px;
+      padding: 52px 44px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .logo svg { width: 30px; height: 30px; fill: #fff; }
+
+    .card h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: #64748b;
+      font-size: 0.88rem;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    .btn-okta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: #1d4ed8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 13px 28px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-okta:hover { background: #1e40af; }
+    .btn-okta svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .footer {
+      margin-top: 28px;
+      font-size: 0.75rem;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>OpenShell</h1>
+      <span>Powered by OpenShell · Okta</span>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+
+      <div class="logo">
+        <!-- terminal icon -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6l6 6-6 6M12 18h8"/>
+          <path d="M4 6l6 6-6 6M12 18h8" stroke="#fff" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+
+      <h2>Welcome to OpenShell</h2>
+      <p>Sign in with your Okta account to access<br>the AI agent workspace.</p>
+
+      <a href="/login/okta" class="btn-okta">
+        <!-- Okta logo mark -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" fill="#fff" opacity=".15"/>
+          <path d="M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7z" fill="#fff"/>
+        </svg>
+        Sign in with Okta
+      </a>
+
+      <div class="footer">Secured by Okta · Agent Identity &amp; Cross-App Access</div>
+
+    </div>
+  </div>
+
+</body>
+</html>

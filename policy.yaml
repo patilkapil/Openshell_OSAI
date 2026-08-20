@@ -1,0 +1,160 @@
+version: 1
+
+filesystem_policy:
+  include_workdir: true
+  read_only:
+    - /usr
+    - /lib
+    - /proc
+    - /dev/urandom
+    - /app
+    - /etc
+    - /var/log
+  read_write:
+    - /sandbox
+    - /tmp
+    - /dev/null
+
+landlock:
+  compatibility: best_effort
+
+process:
+  run_as_user: sandbox
+  run_as_group: sandbox
+
+network_policies:
+  claude_code:
+    name: claude-code
+    binaries:
+      - path: /usr/local/bin/claude
+      - path: /usr/bin/node
+    endpoints:
+      - host: api.anthropic.com
+        port: 443
+        access: full
+        enforcement: enforce
+        protocol: rest
+        tls: terminate
+      - host: statsig.anthropic.com
+        port: 443
+      - host: sentry.io
+        port: 443
+      - host: raw.githubusercontent.com
+        port: 443
+      - host: platform.claude.com
+        port: 443
+
+  python_anthropic:
+    name: python-anthropic
+    binaries:
+      - path: /sandbox/.venv/bin/python3
+      - path: /sandbox/.venv/bin/python
+      - path: /sandbox/.venv312/bin/python
+      - path: /sandbox/.venv312/bin/python3
+      - path: /sandbox/.uv/python/**
+      - path: /sandbox/.uv/python/cpython-3.14.3-linux-x86_64-gnu/bin/python3.14
+      - path: /usr/bin/python3.12
+    endpoints:
+      - host: api.anthropic.com
+        port: 443
+        access: full
+        enforcement: enforce
+        protocol: rest
+        tls: terminate
+      - host: bedrock-runtime.us-east-1.amazonaws.com
+        port: 443
+        access: full
+        enforcement: enforce
+        protocol: rest
+      - host: your-org.oktapreview.com
+        port: 443
+        access: full
+        enforcement: enforce
+        protocol: rest
+        tls: terminate
+      - host: "*.ngrok-free.app"
+        port: 443
+        access: full
+        enforcement: enforce
+        protocol: rest
+        tls: terminate
+
+  pypi:
+    name: pypi
+    binaries:
+      - path: /sandbox/.venv/bin/python
+      - path: /sandbox/.venv/bin/python3
+      - path: /sandbox/.venv/bin/pip
+      - path: /app/.venv/bin/python
+      - path: /app/.venv/bin/python3
+      - path: /app/.venv/bin/pip
+      - path: /usr/local/bin/uv
+      - path: /sandbox/.uv/python/**
+    endpoints:
+      - host: pypi.org
+        port: 443
+      - host: files.pythonhosted.org
+        port: 443
+      - host: github.com
+        port: 443
+      - host: objects.githubusercontent.com
+        port: 443
+      - host: api.github.com
+        port: 443
+      - host: downloads.python.org
+        port: 443
+
+  github_rest_api:
+    name: github-rest-api
+    binaries:
+      - path: /usr/local/bin/claude
+      - path: /usr/bin/gh
+    endpoints:
+      - host: api.github.com
+        port: 443
+        access: read-only
+        enforcement: enforce
+        protocol: rest
+        tls: terminate
+
+  github_ssh_over_https:
+    name: github-ssh-over-https
+    binaries:
+      - path: /usr/bin/git
+    endpoints:
+      - host: github.com
+        port: 443
+        enforcement: enforce
+        protocol: rest
+        tls: terminate
+        rules:
+          - allow:
+              method: GET
+              path: /**/info/refs*
+          - allow:
+              method: POST
+              path: /**/git-upload-pack
+
+  nvidia_inference:
+    name: nvidia-inference
+    binaries:
+      - path: /usr/bin/curl
+      - path: /bin/bash
+      - path: /usr/local/bin/opencode
+    endpoints:
+      - host: integrate.api.nvidia.com
+        port: 443
+
+  opencode:
+    name: opencode
+    binaries:
+      - path: /usr/lib/node_modules/opencode-ai/bin/.opencode
+      - path: /usr/bin/node
+      - path: /usr/local/bin/opencode
+    endpoints:
+      - host: registry.npmjs.org
+        port: 443
+      - host: opencode.ai
+        port: 443
+      - host: integrate.api.nvidia.com
+        port: 443
