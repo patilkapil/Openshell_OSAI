@@ -90,16 +90,16 @@ To run all three tunnels at the same time, open three separate terminal windows 
 │    - Validates Okta JWT for sandbox access                       │
 └───────────────────────────┬──────────────────────────────────────┘
                             │ Sandbox exec
-┌───────────────────────────▼──────────────────────────────────────┐
-│  Sandbox  — isolated Linux environment                           │
-│    Agent 1 (agent.py)                                            │
-│      - LangGraph ReAct agent                                     │
-│      - NeMo Guardrails (rails.co / config.yml)                   │
-│      - XAA token exchange (ID Token → ID-JAG → Access Token)     │
-│      - A2A token exchange (T1 → T2 → T3) for sub-agent calls     │
-│      - Dynamic sub-agent discovery via /.well-known/agent.json   │
+┌───────────────────────────▼──────────────────────────────────────┐   HTTP (XAA Access Token)   ┌─────────────────────────────────────┐
+│  Sandbox  — isolated Linux environment                           │ ─────────────────────────►  │  Jira MCP Server                    │
+│    Agent 1 (agent.py)                                            │                             │  jira_mcp_server/main.py            │
+│      - LangGraph ReAct agent                                     │ ◄─────────────────────────  │    - scope: mcp:read                │
+│      - NeMo Guardrails (rails.co / config.yml)                   │   Jira / fraud tool result  │    - Validates Okta access token    │
+│      - XAA token exchange (ID Token → ID-JAG → Access Token)     │                             │    - Exposes Jira & audit tools     │
+│      - A2A token exchange (T1 → T2 → T3) for sub-agent calls     │                             │    - Exposed via ngrok (port 8082)  │
+│      - Dynamic sub-agent discovery via /.well-known/agent.json   │                             └─────────────────────────────────────┘
 └───────────────────────────┬──────────────────────────────────────┘
-                            │ HTTP (T3 Bearer)
+                            │ HTTP (T3 Bearer)  [A2A]
 ┌───────────────────────────▼──────────────────────────────────────┐
 │  Agent 2 (agent2_server.py)  — local FastAPI server              │
 │    - Validates T3 delegation token from Agent 1                  │
@@ -107,20 +107,12 @@ To run all three tunnels at the same time, open three separate terminal windows 
 │    - LangGraph agent with Trello MCP tools                       │
 │    - Exposes /.well-known/agent.json agent card                  │
 └───────────────────────────┬──────────────────────────────────────┘
-                            │ HTTP (T5 Bearer)
+                            │ HTTP (T5 Bearer)  [A2A]
 ┌───────────────────────────▼──────────────────────────────────────┐
 │  Trello MCP Server (trello_mcp_server/main.py)  — local          │
 │    - Validates T5 Okta access token (scope: read:trello)         │
 │    - Exposes get_trello_cards MCP tool                           │
-│    - Exposed publicly via ngrok tunnel                           │
-└──────────────────────────────────────────────────────────────────┘
-
-                            ▲ HTTP (Access Token Bearer)
-┌───────────────────────────┴──────────────────────────────────────┐
-│  Jira MCP Server (jira_mcp_server/main.py)  — local              │
-│    - Validates Okta access token (scope: mcp:read, aud: server)  │
-│    - Exposes Jira, fraud analysis, and audit tools               │
-│    - Exposed publicly via ngrok tunnel                           │
+│    - Exposed publicly via ngrok (port 8083)                      │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
